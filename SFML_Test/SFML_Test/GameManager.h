@@ -10,6 +10,8 @@ class GameManager
 private:
 	static GameManager *instance;
 	std::vector<std::shared_ptr<GameObject>>* objects;
+	std::vector<std::shared_ptr<GameObject>>* objectsToAdd;
+	std::vector<std::shared_ptr<GameObject>>* objectsToRemove;
 	sf::Clock* clock;
 public:
 	static GameManager* GetInstance();
@@ -18,6 +20,8 @@ public:
 
 	void Update();
 	void Draw(sf::RenderWindow& window);
+	void AddObject(std::shared_ptr<GameObject> obj);
+	void RemoveObject(std::shared_ptr<GameObject> obj);
 
 	~GameManager();
 };
