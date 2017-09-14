@@ -4,6 +4,9 @@
 #include <SFML\Network.hpp>
 #include <SFML\Network\Packet.hpp>
 #include <iostream>
+#include "GameObject.h"
+#include "NetworkObject.h"
+#include "NetworkedPlayer.h"
 
 class NetworkController
 {
@@ -11,27 +14,35 @@ public:
 	NetworkController();
 	~NetworkController();
 
-public:
-	void Update();
-	void Host();
-	void JoinLocalhost();
-	bool isHosting;
-	bool isClient;
+	/// <summary>
+	/// Server code start
+	/// </summary>
+	void StartServer();
 private:
-	void DoStuff();
-	bool quit;
-	sf::Mutex globalMutex;
-	std::string msgSend;
-	sf::UdpSocket *socket;
+	//void sendPacket(sf::Packet& packet, unsigned int skip = -1);
+	bool m_isRunning;
 
-	sf::Thread* hostThread;
-	sf::Thread* clientThread;
+	sf::IpAddress m_ipAdress;
+	unsigned short m_port;
 
-	void DoServerStuff();
-	void DoClientStuff();
+	sf::TcpListener listener;
+	sf::SocketSelector m_selector;
 
-	unsigned short port;
-		
+	int m_maxPlayerNumber;
+	int m_currentID;
+	int m_playerNumber;
+
+	std::vector<NetworkObject> m_playerList;
+	char m_tmp[1400];
+
+	sf::Clock m_clock;
+
+	void SendPackageToClients(sf::Packet & packet, unsigned int skip = -1);
+
+	/// <summary>
+	/// Servercode end
+	/// </summary>
+
 };
 #endif
 

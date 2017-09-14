@@ -164,6 +164,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
+    <ClCompile Include="NetworkedPlayer.cpp" />
+    <ClCompile Include="NetworkObject.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +173,8 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="NetworkController.h" />
+    <ClInclude Include="NetworkedPlayer.h" />
+    <ClInclude Include="NetworkObject.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
