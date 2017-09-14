@@ -25,6 +25,11 @@ GameManager::GameManager()
 	objects->push_back(go);
 
 	clock = new sf::Clock();
+
+	//instantiate the network controller
+	networkController = std::make_shared<NetworkController>();
+
+	hasFocus = false;
 }
 
 void GameManager::Update()
@@ -35,7 +40,26 @@ void GameManager::Update()
 	{
 		(*i)->Update(deltatime);
 	}
+
+	
+	if (!hasFocus)
+	{
+		return;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H) && !networkController->isHosting)
+	{
+		networkController->Host();
+		
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !networkController->isClient)
+	{		
+		networkController->JoinLocalhost();
+	}
 }
+
+
+
 
 void GameManager::Draw(sf::RenderWindow& window)
 {

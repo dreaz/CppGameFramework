@@ -13,6 +13,14 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			if (event.type == sf::Event::LostFocus)
+			{
+				GameManager::GetInstance()->hasFocus = false;
+			}
+			else if (event.type == sf::Event::GainedFocus)
+			{
+				GameManager::GetInstance()->hasFocus = true;
+			}
 		}
 
 		window.clear(sf::Color::Black);
