@@ -21,11 +21,11 @@ GameManager::GameManager()
 	objectsToAdd = new std::vector<std::shared_ptr<GameObject>>;
 	objectsToRemove = new std::vector<std::shared_ptr<GameObject>>;
 
-	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(sf::Vector2f(100, 100));
-	std::shared_ptr<Player> cmp = std::make_shared<Player>(go);
-	go->AddComponent(cmp);
-	this->AddObject(go);
-	std::shared_ptr<Player> cmp1 = std::dynamic_pointer_cast<Player>((go->GetComponent("PlayerCmp")));
+	player = std::make_shared<GameObject>(sf::Vector2f(100, 100));
+	std::shared_ptr<Player> cmp = std::make_shared<Player>(player);
+	player->AddComponent(cmp);
+	this->AddObject(player);
+	std::shared_ptr<Player> cmp1 = std::dynamic_pointer_cast<Player>((player->GetComponent("PlayerCmp")));
 	cmp1->Test();
 	//go->RemoveComponent("PlayerCmp");
 
@@ -35,6 +35,7 @@ GameManager::GameManager()
 	networkController = std::make_shared<NetworkController>();
 
 	hasFocus = false;
+	once = false;
 }
 
 void GameManager::Update()
@@ -64,14 +65,18 @@ void GameManager::Update()
 		return;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H) && !networkController->isHosting)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H) && !once)
 	{
-		networkController->Host();
+		once = true;
+		networkController->StartServer();
 		
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !networkController->isClient)
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !once)
 	{		
-		networkController->JoinLocalhost();
+		once = true;
+		std::shared_ptr<NetworkedPlayer> cmp = std::make_shared<NetworkedPlayer>(player);
+		player->AddComponent(cmp);
+		cmp->JoinServer();
 	}
 }
 

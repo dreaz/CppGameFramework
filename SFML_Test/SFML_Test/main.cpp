@@ -13,15 +13,15 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == sf::Event::LostFocus)
+			
+			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
 			{
-				GameManager::GetInstance()->hasFocus = false;
-			}
-			else if (event.type == sf::Event::GainedFocus)
-			{
-				GameManager::GetInstance()->hasFocus = true;
+				//make keyboard class here that uses this for key press down & up
 			}
 		}
+
+		//set the focus variable
+		GameManager::GetInstance()->hasFocus = window.hasFocus();
 
 		window.clear(sf::Color::Black);
 		GameManager::GetInstance()->Update();

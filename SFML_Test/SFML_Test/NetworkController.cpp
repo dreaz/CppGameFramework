@@ -42,6 +42,8 @@ void NetworkController::StartServer()
 						m_selector.add(*m_playerList.back().GetSocket());
 						m_playerNumber++;
 
+						std::cout << "A player joined" << std::endl;
+
 						sf::Packet outPacket;
 						outPacket << 0;
 						outPacket << m_currentID;
