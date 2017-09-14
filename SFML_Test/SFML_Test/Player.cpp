@@ -25,6 +25,15 @@ void Player::Update(sf::Time deltatime)
 	{
 		GetGameObject()->move(sf::Vector2f(300 * deltatime.asSeconds(), 0));
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		GameManager::GetInstance()->RemoveObject(GetGameObject());
+	}
+}
+
+void Player::Test()
+{
+	std::cout << "Test";
 }
 
 
