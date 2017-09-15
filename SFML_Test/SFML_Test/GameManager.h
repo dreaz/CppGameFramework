@@ -15,7 +15,7 @@ private:
 	std::vector<std::shared_ptr<GameObject>>* objectsToAdd;
 	std::vector<std::shared_ptr<GameObject>>* objectsToRemove;
 	sf::Clock* clock;
-	std::shared_ptr<NetworkController> networkController;
+	class std::shared_ptr<NetworkController> networkController;
 
 	std::shared_ptr<GameObject> player;
 public:

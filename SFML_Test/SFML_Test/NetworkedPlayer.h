@@ -6,6 +6,8 @@
 #include <SFML\Network.hpp>
 #include <iostream>
 #include "NetworkObject.h"
+#include "PacketIdentifier.h"
+
 
 class NetworkedPlayer : public Component
 {
@@ -28,14 +30,19 @@ public:
 
 	void SendMyName();
 
-	void SendTest();
-
 	void RequestPlayerList();
-	std::vector<std::shared_ptr<GameObject>> players;
-
+	std::vector<std::shared_ptr<NetworkedPlayer>> players;
+	void Disconnect();
 
 private:
 
+	void ReceiveData();
+
+	sf::Time sendDataTimer;
+	sf::Clock m_clock;
+	void SendData();
+
+	sf::Vector2f lastPosSent;
 
 	int m_id;
 	bool m_isReady;
@@ -43,7 +50,6 @@ private:
 
 	sf::TcpSocket connection;
 	bool m_connected;
-	void Disconnect();
 
 };
 

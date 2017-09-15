@@ -78,6 +78,11 @@ void GameManager::Update()
 		player->AddComponent(cmp);
 		cmp->JoinServer();
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	{
+		std::shared_ptr<NetworkedPlayer> cmp1 = std::dynamic_pointer_cast<NetworkedPlayer>((player->GetComponent("NetworkedPlayerCmp")));
+		cmp1->Disconnect();
+	}
 }
 
 
@@ -110,5 +115,5 @@ GameManager::~GameManager()
 {
 	delete objects;
 	delete objectsToAdd;
-	delete objectsToRemove;
+	delete objectsToRemove;	
 }

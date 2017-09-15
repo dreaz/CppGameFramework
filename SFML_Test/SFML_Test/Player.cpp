@@ -9,6 +9,10 @@ Player::Player(std::shared_ptr<GameObject> go) : Component(go, "PlayerCmp")
 
 void Player::Update(sf::Time deltatime)
 {
+	if (!GameManager::GetInstance()->hasFocus)
+	{
+		return;
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		GetGameObject()->move(sf::Vector2f(0,-300 * deltatime.asSeconds()));

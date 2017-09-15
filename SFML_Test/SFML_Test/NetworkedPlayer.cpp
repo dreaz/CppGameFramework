@@ -1,5 +1,6 @@
 #include "NetworkedPlayer.h"
-
+//I should feel bad
+#include "GameManager.h"
 
 
 NetworkedPlayer::NetworkedPlayer(std::shared_ptr<GameObject> go) : Component(go, "NetworkedPlayerCmp")
@@ -20,6 +21,45 @@ void NetworkedPlayer::Update(sf::Time deltatime)
 	{
 		return;
 	}
+
+	//receive data
+	ReceiveData();
+	//Send data
+	SendData();
+
+
+}
+
+
+void NetworkedPlayer::SendMyName()
+{
+	sf::Packet temp;
+	temp << (int)PacketType::SavePlayerName;
+	temp << getID();
+	temp << getName();
+
+	if (connection.send(temp) != sf::Socket::Done)
+	{
+		std::cout << "Error sending my name" << std::endl;
+	}
+
+}
+
+
+void NetworkedPlayer::RequestPlayerList()
+{
+	sf::Packet temp;
+	temp << (int)PacketType::SyncPlayers;
+	temp << getID();
+
+	if (connection.send(temp) != sf::Socket::Done)
+	{
+		std::cout << "Error sending getPlayerList to server" << std::endl;
+	}
+}
+
+void NetworkedPlayer::ReceiveData()
+{
 	//receive updates
 	sf::Packet receivePacket;
 	int type, id;
@@ -28,10 +68,12 @@ void NetworkedPlayer::Update(sf::Time deltatime)
 		receivePacket >> type;
 		receivePacket >> id;
 
-		if (type == 0) // you connected to server, get your ID
+		if (type == (int)PacketType::InitialConnection) // you connected to server, get your ID
 		{
+			//If no ID has been assigned to this
 			if (getID() == -1)
 			{
+				//set the id to the received
 				setID(id);
 				std::cout << "I connected to server, my ID: " << getID() << std::endl;
 				this->SendMyName();
@@ -40,24 +82,25 @@ void NetworkedPlayer::Update(sf::Time deltatime)
 			}
 			//m_connected = true;
 		}
-		else if (type == 1) // disconnected
+		else if (type == (int)PacketType::Disconnection) // disconnected
 		{
 			std::cout << "Player disconnected" << std::endl;
-			/*for (unsigned int i = 0; i < enemies.size(); i++)
+			//Find the player by id and remove him
+			for (unsigned int i = 0; i < players.size(); i++)
 			{
-				if (enemies[i]->getID() == id)
+				if (players[i]->getID() == id)
 				{
-					m_textMessage = "Player " + enemies[i]->getName() + " disconnected.";
-					std::cout << "Enemy: " << enemies[i]->getID() << " deleted " << std::endl;
-					enemies.erase(enemies.begin() + i);
+					std::cout << "Player  " << players[i]->getName() << " disconnected!" << std::endl;
+					players.erase(players.begin() + i);
 				}
-			}*/
+			}
 		}
-		else if (type == 2)
+		else if (type == (int)PacketType::ServerFull)
 		{
 			std::cout << "Server is full" << std::endl;
 		}
-		else if (type == 7) //Create new players
+		//Sync player amount to clients
+		else if (type == (int)PacketType::SyncPlayers)
 		{
 			int playerNumber;
 			std::vector<std::string> playersName;
@@ -74,26 +117,30 @@ void NetworkedPlayer::Update(sf::Time deltatime)
 				receivePacket >> tempName;
 				playersName.push_back(tempName);
 				playersId.push_back(tempId);
-
 			}
-
-
-			for (unsigned int i = 0; i < playersId.size(); ++i) //loop through id-s we got
+			//loop through id-s we got
+			for (unsigned int i = 0; i < playersId.size(); ++i)
 			{
-				bool haveThatEnemy = false;
-				for (unsigned int v = 0; v < players.size(); v++) //check if we already have enemy with that id
+				bool haveThatPlayer = false;
+				//check if we already have enemy with that id (contains)
+				for (unsigned int v = 0; v < players.size(); v++)
 				{
-					std::shared_ptr<NetworkedPlayer> networkCmp = std::dynamic_pointer_cast<NetworkedPlayer>(players[v]->GetComponent("NetworkedPlayerCmp"));
-					if (networkCmp->getID() == playersId[i])
+					if (players[v]->getID() == playersId[i])
 					{
-						haveThatEnemy = true;
+						haveThatPlayer = true;
 					}
-
 				}
-				if (playersId[i] != getID() && !haveThatEnemy) //if it is not our id and if we dont have that enemy, create a new enemy with that id
+				//if it's not our own id, and we don't have the player registered, create him and give him an ID
+				if (playersId[i] != getID() && !haveThatPlayer)
 				{
-					players.push_back(std::make_shared<GameObject>(sf::Vector2f(100, 100)));
-					//m_textMessage = "New player connected: " + playersName[i];
+					std::shared_ptr<GameObject> remoteClient = std::make_shared<GameObject>(sf::Vector2f(100, 100));
+					std::shared_ptr<NetworkedPlayer> cmp = std::make_shared<NetworkedPlayer>(remoteClient);
+					remoteClient->AddComponent(cmp);
+					//set the id
+					cmp->setID(playersId[i]);
+					GameManager::GetInstance()->AddObject(remoteClient);
+					players.push_back(cmp);
+					std::cout << "New player joined:  " << playersName[i] << std::endl;
 					std::cout << "Created a new player with id: " << playersId[i] << std::endl;
 
 				}
@@ -103,57 +150,57 @@ void NetworkedPlayer::Update(sf::Time deltatime)
 			playersId.clear();
 
 		}
-	}
+		else if (type == (int)PacketType::SyncPosition)
+		{
+			for (unsigned int i = 0; i < players.size(); i++)
+			{
+				if (players[i]->getID() == id)
+				{
+					sf::Vector2f pos;
+					receivePacket >> pos.x;
+					receivePacket >> pos.y;
 
+					players[i]->GetGameObject()->setPosition(pos);
+					break;
+				}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
-	{
-		SendTest();
+			}
+		}
 	}
 }
 
-
-void NetworkedPlayer::SendMyName()
+void NetworkedPlayer::SendData()
 {
-	sf::Packet temp;
-	temp << 6;
-	temp << getID();
-	temp << getName();
-
-	if (connection.send(temp) != sf::Socket::Done)
+	//Only send data once pr second
+	sendDataTimer += m_clock.restart();
+	if (sendDataTimer >= sf::seconds(1))
 	{
-		std::cout << "Error sending my name" << std::endl;
+		sendDataTimer = sf::Time::Zero;
+		if (m_connected)
+		{
+			sf::Packet temp;
+			temp << PacketType::SyncPosition;
+			temp << getID();
+			temp << GetGameObject()->getPosition().x;
+			temp << GetGameObject()->getPosition().y;
+
+			if (GetGameObject()->getPosition() != lastPosSent)
+			{
+				if (connection.send(temp) != sf::Socket::Done)
+				{
+					std::cout << "Error sending pos data to server" << std::endl;
+					return;
+				}
+			}
+
+			//std::cout << "Sent position update" << std::endl;
+			lastPosSent = GetGameObject()->getPosition();
+
+		}
 	}
 
 }
 
-void NetworkedPlayer::SendTest()
-{
-	sf::Packet temp;
-	temp << 10;
-	temp << "HEJ";
-
-	if (connection.send(temp) != sf::Socket::Done)
-	{
-		std::cout << "Error sending disconnect command to server" << std::endl;
-	}
-	else
-	{
-		std::cout << "Disconnected" << std::endl;
-	}
-}
-
-void NetworkedPlayer::RequestPlayerList()
-{
-	sf::Packet temp;
-	temp << 7;
-	temp << getID();
-	
-	if (connection.send(temp) != sf::Socket::Done)
-	{
-		std::cout << "Error sending getPlayerList to server" << std::endl;
-	}
-}
 
 void NetworkedPlayer::JoinServer()
 {
@@ -167,15 +214,15 @@ void NetworkedPlayer::JoinServer()
 		m_connected = true;
 		connection.setBlocking(false);
 		std::cout << "Connected" << std::endl;
-	}	
-	
+	}
+
 }
 
 
 void NetworkedPlayer::Disconnect()
 {
 	sf::Packet temp;
-	temp << 1;
+	temp << (int)PacketType::Disconnection;
 	temp << getID();
 
 	if (connection.send(temp) != sf::Socket::Done)

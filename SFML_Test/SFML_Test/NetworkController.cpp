@@ -41,11 +41,11 @@ void NetworkController::StartServer()
 						m_playerList.emplace_back(NetworkObject(&tempSocket, sf::Vector2f(0, 0), m_currentID));
 						m_selector.add(*m_playerList.back().GetSocket());
 						m_playerNumber++;
-
+						
 						std::cout << "A player joined" << std::endl;
 
 						sf::Packet outPacket;
-						outPacket << 0;
+						outPacket << (int)PacketType::InitialConnection;
 						outPacket << m_currentID;
 
 						if (m_playerList.back().GetSocket()->send(outPacket) != sf::Socket::Done) //Send client id
@@ -55,7 +55,7 @@ void NetworkController::StartServer()
 					else //if server is full
 					{
 						sf::Packet outPacket;
-						outPacket << 2;
+						outPacket << (int)PacketType::ServerFull;
 						outPacket << 0;
 
 						if (tempSocket->send(outPacket) != sf::Socket::Done)
@@ -72,6 +72,7 @@ void NetworkController::StartServer()
 				//Receive data
 				for (unsigned int i = 0; i < m_playerList.size(); i++)
 				{
+					//Loop through every socket that the selector has ready
 					if (m_selector.isReady(*m_playerList[i].GetSocket()))
 					{
 						sf::Packet received;
@@ -85,11 +86,10 @@ void NetworkController::StartServer()
 
 
 							// 0 is sent when player establishes a connection to the server
-
-							if (num == 1) // player disconnected, send message to all players to delete his character and delete him from servers players list
+							
+							if (num == (int)PacketType::Disconnection) // player disconnected, send message to all players to delete his character and delete him from servers players list
 							{
-
-								//sendPacket(received, i);
+								SendPackageToClients(received, i);
 
 								for (auto& itr : m_playerList)
 								{
@@ -97,24 +97,25 @@ void NetworkController::StartServer()
 									{
 
 										std::cout << std::endl << "Client disconnected!" << std::endl;
-										std::cout << "	ID: " << itr.getId() << " Name: " << itr.GetName() << std::endl;
+										std::cout << "ID: " << itr.getId() << "| Name: " << itr.GetName() << std::endl;
 									}
 								}
-
-								std::cout << "Number of players: " << m_playerNumber << std::endl;
 								m_selector.remove(*m_playerList[i].GetSocket());
 								m_playerList.erase(m_playerList.begin() + i);
 								m_playerNumber--;
+								std::cout << "Number of players: " << m_playerNumber << std::endl;
+
 								break;
 							}
-							else if (num == 10)
+							//2 is server full
+
+							//RequestPlayers from client
+							else if (num == (int)PacketType::SyncPlayers) //send client list with id and names  When player recive this it goes through the list and compares it with its list, if he finds a number that he doesn't have he creates a enemy with that id
 							{
-								std::cout << "SendTest" << std::endl;
-							}
-							else if (num == 7) //send client list with id and names  When player recive this it goes through the list and compares it with its list, if he finds a number that he doesn't have he creates a enemy with that id
-							{
+								//Make a packet
 								sf::Packet namePacket;
-								namePacket << 7;
+								//Serialize some data into it
+								namePacket << (int)PacketType::SyncPlayers;
 								namePacket << 0;
 								namePacket << m_playerNumber;
 
@@ -125,7 +126,34 @@ void NetworkController::StartServer()
 								}
 
 								SendPackageToClients(namePacket);
+							}							
+							else if (num == (int)PacketType::SavePlayerName) //Save player name
+							{
+								if (m_playerList[i].getId() == id)
+								{
+									std::string nameHolder;
+									received >> nameHolder;
+									m_playerList[i].SetName(nameHolder);
+									std::cout << std::endl << std::endl << "New client added." << std::endl;
+									std::cout << "ID: " << id << "| Name: " << nameHolder << std::endl;
+									std::cout << "Number of players: " << m_playerNumber << std::endl;
+								}
 							}
+							else if (num == (int)PacketType::SyncPosition) //Save player name
+							{
+								//If the id is NOT the server
+								if (id != -1)
+								{
+									float x, y = 0;
+									received >> x;
+									received >> y;
+									std::cout << "Server pos X: " << x << "Y: " << y << std::endl;
+
+									//Send out to all clients but the one received the call from. ie all others
+									SendPackageToClients(received, i);
+								}
+							}
+						
 						}
 					}
 				}

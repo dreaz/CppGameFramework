@@ -77,5 +77,11 @@
     <ClInclude Include="NetworkedPlayer.h">
       <Filter>Header Files\Network\Components</Filter>
     </ClInclude>
+    <ClInclude Include="PacketIdentifiers.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketIdentifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

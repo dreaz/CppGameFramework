@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "NetworkObject.h"
 #include "NetworkedPlayer.h"
+#include "PacketIdentifier.h"
 
 class NetworkController
 {

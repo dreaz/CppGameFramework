@@ -175,6 +175,8 @@
     <ClInclude Include="NetworkController.h" />
     <ClInclude Include="NetworkedPlayer.h" />
     <ClInclude Include="NetworkObject.h" />
+    <ClInclude Include="PacketIdentifier.h" />
+    <ClInclude Include="PacketIdentifiers.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
