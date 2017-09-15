@@ -78,6 +78,7 @@ void GameManager::Update()
 		player->AddComponent(cmp);
 		cmp->JoinServer();
 	}
+	//Redo me to use input system
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
 		std::shared_ptr<NetworkedPlayer> cmp1 = std::dynamic_pointer_cast<NetworkedPlayer>((player->GetComponent("NetworkedPlayerCmp")));

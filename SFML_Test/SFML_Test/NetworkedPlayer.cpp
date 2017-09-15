@@ -233,5 +233,6 @@ void NetworkedPlayer::Disconnect()
 	{
 		std::cout << "Disconnected" << std::endl;
 	}
+
 }
 
