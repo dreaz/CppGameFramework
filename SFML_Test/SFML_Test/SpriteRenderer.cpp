@@ -31,6 +31,11 @@ void SpriteRenderer::Draw(sf::RenderWindow & window)
 		window.draw((*sprite));
 }
 
+std::shared_ptr<sf::Sprite> SpriteRenderer::GetSprite()
+{
+	return sprite;
+}
+
 
 SpriteRenderer::~SpriteRenderer()
 {

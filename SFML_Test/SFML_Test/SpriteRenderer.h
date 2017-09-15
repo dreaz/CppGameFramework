@@ -14,6 +14,7 @@ public:
 	SpriteRenderer(std::shared_ptr<GameObject> go, std::string pathToImage);
 	void Update(sf::Time deltatime) override;
 	void Draw(sf::RenderWindow& window) override;
+	std::shared_ptr<sf::Sprite> GetSprite();
 	~SpriteRenderer();
 };
 

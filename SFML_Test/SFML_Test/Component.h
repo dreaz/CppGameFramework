@@ -17,6 +17,7 @@ public:
 	std::shared_ptr<GameObject> GetGameObject();
 	virtual void Update(sf::Time deltaTime);
 	virtual void Draw(sf::RenderWindow& window);
+	virtual void OnCollision(std::shared_ptr<GameObject> other);
 	std::string GetType();
 	~Component();
 };

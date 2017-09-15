@@ -32,6 +32,15 @@ void GameObject::Draw(sf::RenderWindow& window)
 	}
 }
 
+void GameObject::OnCollision(std::shared_ptr<GameObject> other)
+{
+	std::vector<std::shared_ptr<Component>>::iterator i;
+	for (i = components->begin(); i != components->end(); i++)
+	{
+		(*i)->OnCollision(other);
+	}
+}
+
 void GameObject::AddComponent(std::shared_ptr<Component> cmp)
 {
 	components->push_back(cmp);
