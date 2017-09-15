@@ -10,25 +10,24 @@
 class NetworkObject
 {
 public:
-	NetworkObject(std::unique_ptr<sf::TcpSocket>* socket, sf::Vector2f position, int id);
+	NetworkObject(std::unique_ptr<sf::TcpSocket>* socket, int id);
 	~NetworkObject();
 
 	sf::TcpSocket* GetSocket();
-	int getId();
+	int GetID();
 
 	void SetName(const std::string name);
 	std::string GetName();
 
 	void setTimeout(sf::Time time);
-	sf::Time getTimeout();
+	sf::Time GetTimeout();
 
 private:
-	sf::Vector2f m_position;
-	sf::Vector2f m_velocity;
-	std::string m_name;
-	int m_id;
-	std::shared_ptr<sf::TcpSocket> m_socket = nullptr;
-	sf::Time m_timeout;
+
+	int id;
+	std::shared_ptr<sf::TcpSocket> socket = nullptr;
+	sf::Time timeout;
+	std::string name;
 };
 
 #endif

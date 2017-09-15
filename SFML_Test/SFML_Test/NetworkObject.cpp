@@ -1,50 +1,82 @@
+/// <summary>
+/// Class only on server to keep track of players and their connections, id and name
+/// </summary>
+
 #include "NetworkObject.h"
 
 
 
-
-NetworkObject::NetworkObject(std::unique_ptr<sf::TcpSocket>* socket, sf::Vector2f position, int id)
+/// <summary>
+/// Each network object is creating from listening to connections on the server. Store the socket that the listener picked up, ie the client
+/// </summary>
+/// <param name="socket"></param>
+/// <param name="id"></param>
+NetworkObject::NetworkObject(std::unique_ptr<sf::TcpSocket>* initSocket, int id)
 {
-	m_position = position;
-	m_name = "Default Name";
-	m_id = id;
-	m_socket = std::move(*socket);
-	m_velocity = sf::Vector2f(0, 0);
-	m_timeout = sf::seconds(0);
+	this->id = id;
+	//Std move for handling shared_ptr's correctly
+	socket = std::move(*initSocket);
+	timeout = sf::seconds(0);
 }
 
 
-
+/// <summary>
+/// Get the socket
+/// </summary>
+/// <returns></returns>
 sf::TcpSocket* NetworkObject::GetSocket()
 {
-	return m_socket.get();
+	return socket.get();
 }
 
-void NetworkObject::SetName(const std::string name)
-{
-	m_name = name;
-}
-
-std::string NetworkObject::GetName()
-{
-	return m_name;
-}
-
+/// <summary>
+/// Set the timeout variable
+/// </summary>
+/// <param name="time"></param>
 void NetworkObject::setTimeout(sf::Time time)
 {
-	m_timeout = time;
+	timeout = time;
 }
 
-sf::Time NetworkObject::getTimeout()
+/// <summary>
+/// Get the timeout variable
+/// </summary>
+/// <returns></returns>
+sf::Time NetworkObject::GetTimeout()
 {
-	return m_timeout;
+	return timeout;
 }
 
-int NetworkObject::getId()
+/// <summary>
+/// Get the ID
+/// </summary>
+/// <returns></returns>
+int NetworkObject::GetID()
 {
-	return m_id;
+	return id;
 }
 
+/// <summary>
+/// Set the name of this networked objects
+/// </summary>
+/// <param name="name"></param>
+void NetworkObject::SetName(const std::string name)
+{
+	this->name = name;
+}
+
+/// <summary>
+/// Get the name of this networked object
+/// </summary>
+/// <returns></returns>
+std::string NetworkObject::GetName()
+{
+	return name;
+}
+
+/// <summary>
+/// Deconstructor
+/// </summary>
 NetworkObject::~NetworkObject()
 {
 }

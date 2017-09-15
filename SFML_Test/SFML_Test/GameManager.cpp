@@ -26,7 +26,7 @@ GameManager::GameManager()
 	player->AddComponent(cmp);
 	this->AddObject(player);
 	std::shared_ptr<Player> cmp1 = std::dynamic_pointer_cast<Player>((player->GetComponent("PlayerCmp")));
-	cmp1->Test();
+	//cmp1->Test();
 	//go->RemoveComponent("PlayerCmp");
 
 	clock = new sf::Clock();
@@ -36,6 +36,8 @@ GameManager::GameManager()
 
 	hasFocus = false;
 	once = false;
+
+	std::cout << "Press H to host\nOr press C to connect." << std::endl;
 }
 
 void GameManager::Update()
@@ -60,6 +62,7 @@ void GameManager::Update()
 	}
 
 	
+	//Has focus is because that you can use the same keyboard for multiple windows, which really make multiplayer testing annoying.
 	if (!hasFocus)
 	{
 		return;

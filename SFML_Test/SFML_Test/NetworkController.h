@@ -21,17 +21,17 @@ public:
 	void StartServer();
 private:
 	//void sendPacket(sf::Packet& packet, unsigned int skip = -1);
-	bool m_isRunning;
+	bool isRunning;
 
 	sf::IpAddress m_ipAdress;
 	unsigned short m_port;
 
 	sf::TcpListener listener;
-	sf::SocketSelector m_selector;
+	sf::SocketSelector socketSelector;
 
-	int m_maxPlayerNumber;
-	int m_currentID;
-	int m_playerNumber;
+	int maxPlayers;
+	int currentID;
+	int playerNumber;
 
 	std::vector<NetworkObject> m_playerList;
 	char m_tmp[1400];

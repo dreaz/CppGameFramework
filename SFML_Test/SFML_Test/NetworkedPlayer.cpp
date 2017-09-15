@@ -1,3 +1,7 @@
+/// <summary>
+/// The networking class for the client.
+/// </summary>
+
 #include "NetworkedPlayer.h"
 //I should feel bad
 #include "GameManager.h"
@@ -5,6 +9,7 @@
 
 NetworkedPlayer::NetworkedPlayer(std::shared_ptr<GameObject> go) : Component(go, "NetworkedPlayerCmp")
 {
+	//Defaults
 	setID(-1);
 	setName("NF Mynster");
 }
@@ -17,6 +22,7 @@ NetworkedPlayer::~NetworkedPlayer()
 
 void NetworkedPlayer::Update(sf::Time deltatime)
 {
+	//Don't do anything if we are not connected
 	if (!m_connected)
 	{
 		return;
@@ -26,11 +32,11 @@ void NetworkedPlayer::Update(sf::Time deltatime)
 	ReceiveData();
 	//Send data
 	SendData();
-
-
 }
 
-
+/// <summary>
+/// Send the name package to the server
+/// </summary>
 void NetworkedPlayer::SendMyName()
 {
 	sf::Packet temp;
@@ -45,7 +51,9 @@ void NetworkedPlayer::SendMyName()
 
 }
 
-
+/// <summary>
+/// Send a request for the player count to the server
+/// </summary>
 void NetworkedPlayer::RequestPlayerList()
 {
 	sf::Packet temp;
@@ -58,10 +66,14 @@ void NetworkedPlayer::RequestPlayerList()
 	}
 }
 
+/// <summary>
+/// The method that handles and receives all data. Each packet has a type number, which defines what action each packet does
+/// </summary>
 void NetworkedPlayer::ReceiveData()
 {
-	//receive updates
+	//Create the receiver packet
 	sf::Packet receivePacket;
+	//All packets are sent with a type(packetType) and a sender ID
 	int type, id;
 	if (connection.receive(receivePacket) == sf::Socket::Done)
 	{
@@ -76,11 +88,12 @@ void NetworkedPlayer::ReceiveData()
 				//set the id to the received
 				setID(id);
 				std::cout << "I connected to server, my ID: " << getID() << std::endl;
+				//send the name packet for the server
 				this->SendMyName();
 				sf::sleep(sf::milliseconds(50));
+				//Request to figure out who else is connected
 				RequestPlayerList();
-			}
-			//m_connected = true;
+			}			
 		}
 		else if (type == (int)PacketType::Disconnection) // disconnected
 		{
@@ -205,9 +218,11 @@ void NetworkedPlayer::SendData()
 void NetworkedPlayer::JoinServer()
 {
 	sf::IpAddress ip = "localhost";
+	std::cout << "Connecting to local host" << std::endl;
 	if (connection.connect(ip, 45000, sf::seconds(5)) != sf::Socket::Done)
 	{
 		std::cout << "Error connecting to server" << std::endl;
+		m_connected = false;
 	}
 	else
 	{
@@ -221,6 +236,10 @@ void NetworkedPlayer::JoinServer()
 
 void NetworkedPlayer::Disconnect()
 {
+	if (!m_connected)
+	{
+		return;
+	}
 	sf::Packet temp;
 	temp << (int)PacketType::Disconnection;
 	temp << getID();

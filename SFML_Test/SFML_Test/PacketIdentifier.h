@@ -1,5 +1,8 @@
 #ifndef PACKETIDENTIFIER_H
 #define PACKETIDENTIFIER_H
+/// <summary>
+/// A helper class to give ints another name basically
+/// </summary>
 enum PacketType
 {
 	InitialConnection = 0,
