@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include "SpriteRenderer.h"
+#include "Physics2D.h"
 
 GameManager* GameManager::instance = 0;
 
@@ -21,12 +22,19 @@ GameManager::GameManager()
 	objects = new std::vector<std::shared_ptr<GameObject>>;
 	objectsToAdd = new std::vector<std::shared_ptr<GameObject>>;
 	objectsToRemove = new std::vector<std::shared_ptr<GameObject>>;
+
+	//Make GameObject and add Components
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(sf::Vector2f(100, 100));
+	std::shared_ptr<Physics2D> cmp3 = std::make_shared<Physics2D>(go);
+	go->AddComponent(cmp3);
 	std::shared_ptr<Player> cmp = std::make_shared<Player>(go);
-	std::shared_ptr<SpriteRenderer> cmp2 = std::make_shared<SpriteRenderer>(go,"sprites/box.png");
 	go->AddComponent(cmp);
+	std::shared_ptr<SpriteRenderer> cmp2 = std::make_shared<SpriteRenderer>(go, "sprites/box.png");
 	go->AddComponent(cmp2);
+
+	//Set Scale
 	go->setScale(sf::Vector2f(.5f, .5f));
+
 	this->AddObject(go);
 
 
@@ -34,6 +42,7 @@ GameManager::GameManager()
 	//cmp1->Test();
 	//go->RemoveComponent("PlayerCmp");
 
+	initilized = true;
 	clock = new sf::Clock();
 }
 

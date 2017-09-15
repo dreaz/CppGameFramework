@@ -163,6 +163,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Physics2D.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
   </ItemGroup>
@@ -170,6 +171,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Physics2D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SpriteRenderer.h" />
   </ItemGroup>

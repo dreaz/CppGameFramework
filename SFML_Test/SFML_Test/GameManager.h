@@ -22,7 +22,7 @@ public:
 	void Draw(sf::RenderWindow& window);
 	void AddObject(std::shared_ptr<GameObject> obj);
 	void RemoveObject(std::shared_ptr<GameObject> obj);
-
+	bool initilized = false;
 	~GameManager();
 };
 
