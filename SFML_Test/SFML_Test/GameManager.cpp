@@ -1,6 +1,7 @@
 #include "GameManager.h"
 
 #include "Player.h"
+#include "SpriteRenderer.h"
 
 GameManager* GameManager::instance = 0;
 
@@ -20,13 +21,17 @@ GameManager::GameManager()
 	objects = new std::vector<std::shared_ptr<GameObject>>;
 	objectsToAdd = new std::vector<std::shared_ptr<GameObject>>;
 	objectsToRemove = new std::vector<std::shared_ptr<GameObject>>;
-
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(sf::Vector2f(100, 100));
 	std::shared_ptr<Player> cmp = std::make_shared<Player>(go);
+	std::shared_ptr<SpriteRenderer> cmp2 = std::make_shared<SpriteRenderer>(go,"sprites/box.png");
 	go->AddComponent(cmp);
+	go->AddComponent(cmp2);
+	go->setScale(sf::Vector2f(.5f, .5f));
 	this->AddObject(go);
-	std::shared_ptr<Player> cmp1 = std::dynamic_pointer_cast<Player>((go->GetComponent("PlayerCmp")));
-	cmp1->Test();
+
+
+	//std::shared_ptr<Player> cmp1 = std::dynamic_pointer_cast<Player>((go->GetComponent("PlayerCmp")));
+	//cmp1->Test();
 	//go->RemoveComponent("PlayerCmp");
 
 	clock = new sf::Clock();

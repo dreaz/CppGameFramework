@@ -9,7 +9,6 @@ class Component;
 class GameObject : public sf::Transformable
 {
 private:
-	sf::CircleShape shape;
 	std::vector<std::shared_ptr<Component>>* components;
 	std::vector<std::shared_ptr<Component>>* componentsToRemove;
 public:

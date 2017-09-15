@@ -2,10 +2,6 @@
 
 GameObject::GameObject(sf::Vector2f& initPos)
 {
-	shape = sf::CircleShape(100.f);
-	shape.setPosition(initPos);
-	shape.setFillColor(sf::Color::Red);
-
 	components = new std::vector<std::shared_ptr<Component>>;
 	componentsToRemove = new std::vector<std::shared_ptr<Component>>;
 	this->setPosition(initPos);
@@ -25,7 +21,6 @@ void GameObject::Update(sf::Time deltatime)
 	{
 		(*i)->Update(deltatime);
 	}
-	shape.setPosition(this->getPosition());
 }
 
 void GameObject::Draw(sf::RenderWindow& window)
@@ -35,7 +30,6 @@ void GameObject::Draw(sf::RenderWindow& window)
 	{
 		(*i)->Draw(window);
 	}
-	window.draw(shape);
 }
 
 void GameObject::AddComponent(std::shared_ptr<Component> cmp)
