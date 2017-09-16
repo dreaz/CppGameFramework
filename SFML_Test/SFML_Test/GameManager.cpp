@@ -67,6 +67,15 @@ void GameManager::Update()
 {
 	sf::Time deltatime = clock->restart();
 
+
+	//Add Objects
+	objects->insert(objects->end(), objectsToAdd->begin(), objectsToAdd->end());
+	objectsToAdd->clear();
+
+	//Add Colliders
+	colliders->insert(colliders->end(), collidersToAdd->begin(), collidersToAdd->end());
+	collidersToAdd->clear();
+
 	//Remove Objects
 	for (std::shared_ptr<GameObject> go : (*objectsToRemove))
 	{
@@ -80,14 +89,6 @@ void GameManager::Update()
 		colliders->erase(std::remove(colliders->begin(), colliders->end(), col), colliders->end());
 	}
 	collidersToRemove->clear();
-
-	//Add Objects
-	objects->insert(objects->end(), objectsToAdd->begin(), objectsToAdd->end());
-	objectsToAdd->clear();
-
-	//Add Colliders
-	colliders->insert(colliders->end(), collidersToAdd->begin(), collidersToAdd->end());
-	collidersToAdd->clear();
 
 	std::vector<std::shared_ptr<GameObject>>::iterator i;
 	for (i = objects->begin(); i != objects->end(); i++)
