@@ -135,6 +135,19 @@ std::vector<std::shared_ptr<Collider>>* GameManager::GetColliders()
 	return colliders;
 }
 
+std::shared_ptr<GameObject> GameManager::FindObjectByTag(std::string tag)
+{
+	std::vector<std::shared_ptr<GameObject>>::iterator i;
+	for (i = objects->begin(); i != objects->end(); i++)
+	{
+		if ((*i)->Tag == tag)
+		{
+			return std::shared_ptr<GameObject>();			
+		}
+	}
+	return NULL;	
+}
+
 GameManager::~GameManager()
 {
 	delete objects;

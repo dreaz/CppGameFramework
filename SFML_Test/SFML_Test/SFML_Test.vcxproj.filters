@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -42,6 +42,15 @@
     <ClCompile Include="Collider.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkedPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -56,18 +65,6 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkController.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkObject.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkedPlayer.h">
-      <Filter>Header Files\Network\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketIdentifiers.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
     <ClInclude Include="PacketIdentifier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,6 +75,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkedPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketIdentifiers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

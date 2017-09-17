@@ -41,6 +41,9 @@ public:
 	void RemoveCollider(std::shared_ptr<Collider> obj);
 	std::vector<std::shared_ptr<Collider>>* GetColliders();
 
+	std::shared_ptr<GameObject> FindObjectByTag(std::string tag);
+
+
 	bool initilized = false;
 	~GameManager();
 };
