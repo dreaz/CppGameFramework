@@ -21,6 +21,10 @@ void Component::Draw(sf::RenderWindow& window)
 {
 }
 
+void Component::OnCollision(std::shared_ptr<GameObject> other)
+{
+}
+
 std::string Component::GetType()
 {
 	return type;

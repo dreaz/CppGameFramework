@@ -16,18 +16,6 @@
     <Filter Include="Source Files\Component">
       <UniqueIdentifier>{62d8b28b-41e8-4bb6-8c44-22e1138185d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Network">
-      <UniqueIdentifier>{6784a7ed-fb82-49ea-9c86-32cd609f5fe3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Network">
-      <UniqueIdentifier>{c8a5be60-89d8-4435-8b47-4bc312742089}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Network\Components">
-      <UniqueIdentifier>{2bd34f32-44bd-411d-b10a-4cde0aba2d52}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Network\Components">
-      <UniqueIdentifier>{5c0a045c-7484-42da-a3a2-100db1921d8e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,20 +27,20 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkObject.cpp">
-      <Filter>Source Files\Network</Filter>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkedPlayer.cpp">
-      <Filter>Source Files\Network\Components</Filter>
+    <ClCompile Include="Physics2D.cpp">
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkController.cpp">
-      <Filter>Source Files\Network</Filter>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,19 +56,13 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkController.h">
-      <Filter>Header Files\Network</Filter>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkObject.h">
-      <Filter>Header Files\Network</Filter>
+    <ClInclude Include="Physics2D.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkedPlayer.h">
-      <Filter>Header Files\Network\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketIdentifiers.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketIdentifier.h">
+    <ClInclude Include="Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
