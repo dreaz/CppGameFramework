@@ -169,6 +169,7 @@
     <ClCompile Include="NetworkController.cpp" />
     <ClCompile Include="NetworkedPlayer.cpp" />
     <ClCompile Include="NetworkObject.cpp" />
+    <ClCompile Include="Physics2D.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
   </ItemGroup>

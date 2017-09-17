@@ -61,14 +61,6 @@ GameManager::GameManager()
 
 	initilized = true;
 	clock = new sf::Clock();
-
-	//instantiate the network controller
-	networkController = std::make_shared<NetworkController>();
-
-	hasFocus = false;
-	once = false;
-
-	std::cout << "Press H to host\nOr press C to connect." << std::endl;
 }
 
 void GameManager::Update()
@@ -103,37 +95,7 @@ void GameManager::Update()
 	{
 		(*i)->Update(deltatime);
 	}
-
-	
-	//Has focus is because that you can use the same keyboard for multiple windows, which really make multiplayer testing annoying.
-	if (!hasFocus)
-	{
-		return;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H) && !once)
-	{
-		once = true;
-		networkController->StartServer();
-		
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !once)
-	{		
-		once = true;
-		std::shared_ptr<NetworkedPlayer> cmp = std::make_shared<NetworkedPlayer>(player);
-		player->AddComponent(cmp);
-		cmp->JoinServer();
-	}
-	//Redo me to use input system
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-	{
-		std::shared_ptr<NetworkedPlayer> cmp1 = std::dynamic_pointer_cast<NetworkedPlayer>((player->GetComponent("NetworkedPlayerCmp")));
-		cmp1->Disconnect();
-	}
 }
-
-
-
 
 void GameManager::Draw(sf::RenderWindow& window)
 {

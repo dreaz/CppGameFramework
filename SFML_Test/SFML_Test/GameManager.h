@@ -22,9 +22,6 @@ private:
 	std::vector<std::shared_ptr<Collider>>* collidersToRemove;
 
 	sf::Clock* clock;
-	class std::shared_ptr<NetworkController> networkController;
-
-	std::shared_ptr<GameObject> player;
 public:
 	static GameManager* GetInstance();
 
