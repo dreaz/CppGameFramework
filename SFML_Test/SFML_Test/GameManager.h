@@ -7,6 +7,8 @@
 #include "NetworkController.h"
 
 class GameObject;
+class Collider;
+
 class GameManager
 {
 private:
@@ -14,6 +16,11 @@ private:
 	std::vector<std::shared_ptr<GameObject>>* objects;
 	std::vector<std::shared_ptr<GameObject>>* objectsToAdd;
 	std::vector<std::shared_ptr<GameObject>>* objectsToRemove;
+
+	std::vector<std::shared_ptr<Collider>>* colliders;
+	std::vector<std::shared_ptr<Collider>>* collidersToAdd;
+	std::vector<std::shared_ptr<Collider>>* collidersToRemove;
+
 	sf::Clock* clock;
 	class std::shared_ptr<NetworkController> networkController;
 
@@ -25,6 +32,7 @@ public:
 
 	void Update();
 	void Draw(sf::RenderWindow& window);
+
 	void AddObject(std::shared_ptr<GameObject> obj);
 	void RemoveObject(std::shared_ptr<GameObject> obj);
 
@@ -32,9 +40,15 @@ public:
 	bool once;
 
 
+	void AddCollider(std::shared_ptr<Collider> obj);
+	void RemoveCollider(std::shared_ptr<Collider> obj);
+	std::vector<std::shared_ptr<Collider>>* GetColliders();
+
+	bool initilized = false;
 	~GameManager();
 };
 
 #include "GameObject.h"
+#include "Collider.h"
 
 #endif
