@@ -16,6 +16,7 @@ void Player::Update(sf::Time deltatime)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
+		GetGameObject()->setRotation(50);
 		physics->SetVelocity(sf::Vector2f(0, -300));
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))

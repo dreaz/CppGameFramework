@@ -13,6 +13,8 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<GameObject> go, std::string pathT
 	isLoaded = true;
 	sprite = std::make_shared<sf::Sprite>();
 	sprite->setTexture(texture);
+	//set the origin to the center
+	GetGameObject()->setOrigin(sprite->getLocalBounds().width / 2, sprite->getLocalBounds().height / 2);
 }
 
 void SpriteRenderer::Update(sf::Time deltatime)
