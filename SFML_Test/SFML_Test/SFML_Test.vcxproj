@@ -161,6 +161,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ButtonBase.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -172,9 +173,11 @@
     <ClCompile Include="Physics2D.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
+    <ClCompile Include="UIController.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ButtonBase.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameManager.h" />
@@ -187,6 +190,7 @@
     <ClInclude Include="Physics2D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SpriteRenderer.h" />
+    <ClInclude Include="UIController.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -4,6 +4,7 @@
 #include "SpriteRenderer.h"
 #include "Physics2D.h"
 #include "Collider.h"
+#include "ButtonBase.h"
 
 GameManager* GameManager::instance = 0;
 
@@ -46,6 +47,13 @@ GameManager::GameManager()
 	std::shared_ptr<Collider> c2 = std::make_shared<Collider>(go2, true);
 	AddCollider(c2);
 	go2->AddComponent(c2);
+
+	//Add a test button
+	std::shared_ptr<GameObject> button = std::make_shared<GameObject>(sf::Vector2f(400, 100));
+	std::shared_ptr<ButtonBase> buttonCMP = std::make_shared<ButtonBase>(button, sf::Vector2f(400,100), std::bind(&GameManager::ButtonCallbackTest, this));
+	button->AddComponent(buttonCMP);
+	this->AddObject(button);
+
 
 	//Set Scale
 	go->setScale(sf::Vector2f(.5f, .5f));
@@ -119,6 +127,11 @@ void GameManager::RemoveObject(std::shared_ptr<GameObject> obj)
 	}
 }
 
+
+void GameManager::ButtonCallbackTest()
+{
+	std::cout << "SUP" << std::endl;
+}
 
 void GameManager::AddCollider(std::shared_ptr<Collider> obj)
 {

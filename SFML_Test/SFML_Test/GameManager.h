@@ -8,6 +8,7 @@
 
 class GameObject;
 class Collider;
+class ButtonBase;
 
 class GameManager
 {
@@ -36,6 +37,8 @@ public:
 	bool hasFocus;
 	bool once;
 
+	void ButtonCallbackTest();
+	
 
 	void AddCollider(std::shared_ptr<Collider> obj);
 	void RemoveCollider(std::shared_ptr<Collider> obj);
