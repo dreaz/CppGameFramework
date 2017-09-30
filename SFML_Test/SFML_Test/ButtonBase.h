@@ -14,7 +14,7 @@
 class ButtonBase : public Component
 {
 public:
-	ButtonBase(std::shared_ptr<GameObject> go, sf::Vector2f size, std::function<void(void)> callback);
+	ButtonBase(std::shared_ptr<GameObject> go, sf::Vector2f size, sf::String buttonLabel, std::function<void(void)> callback);
 	~ButtonBase();
 
 	void Update(sf::Time deltatime) override;
@@ -23,6 +23,11 @@ public:
 	bool MouseDown = false;
 
 	std::function<void(void)> callback;
+
+	std::shared_ptr<sf::Text> ButtonText;
+	std::shared_ptr<sf::Font> Font;
+
+	bool FontLoaded = false;
 
 private:
 	std::shared_ptr<sf::FloatRect> buttonRectangle;

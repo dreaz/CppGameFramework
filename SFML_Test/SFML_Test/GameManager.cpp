@@ -50,7 +50,7 @@ GameManager::GameManager()
 
 	//Add a test button
 	std::shared_ptr<GameObject> button = std::make_shared<GameObject>(sf::Vector2f(400, 100));
-	std::shared_ptr<ButtonBase> buttonCMP = std::make_shared<ButtonBase>(button, sf::Vector2f(400,100), std::bind(&GameManager::ButtonCallbackTest, this));
+	std::shared_ptr<ButtonBase> buttonCMP = std::make_shared<ButtonBase>(button, sf::Vector2f(400,100), sf::String("Button"), std::bind(&GameManager::ButtonCallbackTest, this));
 	button->AddComponent(buttonCMP);
 	this->AddObject(button);
 
